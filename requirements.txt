@@ -1,0 +1,5 @@
+scapy==2.5.0
+pandas==2.1.0
+matplotlib==3.7.2
+seaborn==0.12.2
+rich==13.5.2
