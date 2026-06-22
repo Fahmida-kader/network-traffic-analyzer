@@ -1,87 +1,88 @@
-# 🛡 Network Traffic Analyzer
+# Network Traffic Analyzer
 
-> **CV Line:** Network Traffic Analyzer (Python, Scapy, Pandas, Matplotlib)
+A Python-based CLI tool that captures network packets, identifies protocols, analyzes traffic patterns, and generates a visual dashboard.
 
-A command-line tool that captures network packets, identifies protocols, extracts metadata, stores data in CSV, analyzes traffic patterns, and generates a rich visual dashboard.
-
----
 ![Dashboard](screenshots/dashboard.png)
-## Pipeline
-
-```
-Capture Packets  →  Identify Protocols  →  Extract Information
-      ↓
-Store Data (CSV)  →  Analyze Traffic  →  Create Charts  →  Dashboard
-```
 
 ---
 
-## Folder Structure
+## What it does
+
+```
+Capture Packets  →  Identify Protocols  →  Extract Metadata
+        ↓
+Store as CSV  →  Analyze Traffic  →  Generate Dashboard
+```
+
+Captures 200+ packets across 7 protocols (TCP, UDP, ICMP, DNS, HTTP, HTTPS, ARP), runs statistical analysis with Pandas, and produces a dark-themed 7-chart dashboard saved as PNG.
+
+---
+
+## Tech Stack
+
+| Tool          | Purpose                       |
+|---------------|-------------------------------|
+| Python 3.9+   | Core language                 |
+| Scapy         | Packet capture & parsing      |
+| Pandas        | Data storage & analysis       |
+| Matplotlib    | Charts & dashboard            |
+| Seaborn       | Statistical visualization     |
+
+---
+
+## Project Structure
 
 ```
 network-traffic-analyzer/
 │
-├── venv/               ← virtual environment (not committed)
-├── capture.py          ← Step 1: Packet capture (Scapy / simulated)
-├── analyzer.py         ← Step 2: Traffic analysis with Pandas
-├── dashboard.py        ← Step 3: Charts & dashboard with Matplotlib
-├── traffic.csv         ← Generated packet data
-├── requirements.txt    ← Python dependencies
-├── screenshots/        ← Dashboard PNG output
+├── capture.py          ← Packet capture (Scapy / simulated mode)
+├── analyzer.py         ← Traffic analysis with Pandas
+├── dashboard.py        ← 7-chart dashboard with Matplotlib
+├── requirements.txt    ← Dependencies
+├── screenshots/        ← Dashboard output
 └── README.md
 ```
 
 ---
 
-## Quick Start
+## Getting Started
 
 ```bash
-# 1. Clone & enter project
+# Clone the repo
+git clone https://github.com/Fahmida-kader/network-traffic-analyzer.git
 cd network-traffic-analyzer
 
-# 2. Create virtual environment
+# Set up virtual environment
 python3 -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 
-# 3. Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. Capture packets (generates traffic.csv)
-python capture.py
-
-# 5. Analyze traffic (prints report to terminal)
-python analyzer.py
-
-# 6. Generate dashboard (saves screenshots/dashboard.png)
-python dashboard.py
+# Run the pipeline
+python capture.py       # generates traffic.csv
+python analyzer.py      # prints analysis report
+python dashboard.py     # saves screenshots/dashboard.png
 ```
 
 ---
 
-## Modules
+## Dashboard
 
-### `capture.py`
-- Simulates realistic network traffic (TCP, UDP, ICMP, DNS, HTTP, HTTPS, ARP)
-- Captures src/dst IP, protocol, ports, packet length, timestamp
-- Saves 200 records to `traffic.csv`
-- **Real capture:** swap simulation with `scapy.sniff()` (requires `sudo`)
+The dashboard includes:
 
-### `analyzer.py`
-- Loads CSV with Pandas
-- Protocol distribution, top talkers, top destinations
-- Bandwidth per protocol, traffic over time, port activity
-- Rich terminal table output
-
-### `dashboard.py`
-- Dark-themed 3×3 grid dashboard
-- KPI strip: total packets, bandwidth, avg size, unique IPs
-- Charts: protocol pie, bandwidth bar, packet size histogram,
-  traffic timeline, top IPs (horizontal bars), port heatmap
-- Saves to `screenshots/dashboard.png`
+- Protocol distribution (pie chart)
+- Bandwidth usage per protocol
+- Packet size distribution (histogram)
+- Traffic volume over time (timeline)
+- Top source & destination IPs
+- Most active ports
 
 ---
 
-## Real Scapy Capture (Linux/macOS, requires sudo)
+## Real Packet Capture
+
+By default the tool runs in simulation mode (no root required). To capture live traffic with Scapy on Linux/macOS:
 
 ```python
 from scapy.all import sniff, IP, TCP, UDP
@@ -94,22 +95,4 @@ def packet_callback(pkt):
 sniff(prn=packet_callback, count=200, store=False)
 ```
 
----
-
-## Tech Stack
-
-| Tool        | Purpose                        |
-|-------------|--------------------------------|
-| Python 3.9+ | Core language                  |
-| Scapy       | Packet capture & parsing       |
-| Pandas      | Data storage & analysis        |
-| Matplotlib  | Charts & dashboard             |
-| Seaborn     | Statistical visualization      |
-| Rich        | Terminal tables & formatting   |
-
----
-
-## CV Description
-
-**Network Traffic Analyzer** (Python, Scapy, Pandas, Matplotlib)  
-Built a CLI tool that captures live network packets using Scapy, identifies protocols (TCP/UDP/ICMP/DNS/HTTP), extracts metadata, stores records in CSV, and generates an interactive dashboard with protocol distribution, bandwidth analysis, top talkers, traffic timeline, and port activity charts using Pandas and Matplotlib.
+> Requires `sudo` on Linux/macOS.
